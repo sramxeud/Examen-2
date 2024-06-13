@@ -1,0 +1,45 @@
+# Creamos la tabla de libros
+cursor.execute('''
+CREATE TABLE libros(
+    id INTEGER PRIMARY KEY,
+    titulo TEXT,
+    autor TEXT,
+    año INTEGER,
+    isbn TEXT
+)
+''')
+
+# Creamos la tabla de miembros
+cursor.execute('''
+CREATE TABLE miembros(
+    id INTEGER PRIMARY KEY,
+    nombre TEXT,
+    dirección TEXT,
+    teléfono TEXT
+)
+''')
+
+# Creamos la tabla de préstamos
+cursor.execute('''
+CREATE TABLE prestamos(
+    id INTEGER PRIMARY KEY,
+    id_libro INTEGER,
+    id_miembro INTEGER,
+    fecha_prestamo TEXT,
+    fecha_devolución TEXT,
+    FOREIGN KEY(id_libro) REFERENCES libros(id),
+    FOREIGN KEY(id_miembro) REFERENCES miembros(id)
+)
+''')
+
+# Insertamos algunos datos de ejemplo
+cursor.execute("INSERT INTO libros (titulo, autor, año, isbn) VALUES (?, ?, ?, ?)",
+              ('Don Quijote', 'Miguel de Cervantes', 1605, '978-84-376-0494-7'))
+cursor.execute("INSERT INTO miembros (nombre, dirección, teléfono) VALUES (?, ?, ?)",
+              ('Juan Pérez', 'Calle Falsa 123', '555-1234'))
+
+# Guardamos los cambios
+conn.commit()
+
+# Cerramos la conexión
+conn.close()
